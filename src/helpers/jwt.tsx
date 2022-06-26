@@ -1,7 +1,5 @@
 import Cookies from "js-cookie";
 export const getJWT = () => {
-  return Cookies.get("X-PPEC-JWT");
+  return Cookies.get("attinderToken");
 };
-export const getTS = () => {
-  return Cookies.get("X-PPEC-TS");
-};
+

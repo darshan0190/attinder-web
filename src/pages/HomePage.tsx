@@ -14,9 +14,24 @@ import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import IconButton from '@mui/material/IconButton';
+import { AccountContext } from '../context/AccountContext';
+import { useCookies } from 'react-cookie';
+import { useEffect } from "react";
+import API from "../utils/API";
 
 
 const HomePage = ()=>{
+    const [cookies, removeCookie] = useCookies(['attinderToken']);
+    const { token ,setauthentication} = React.useContext(AccountContext);
+
+    useEffect(()=>{
+        API.post("http://192.168.1.36:5001/API/get_profile",
+        {"token":token.split("-")[0]}).then(
+            response=>{
+                console.log(response.data)
+            }
+        )
+    },[])
 
     return <Container >
     <Box
@@ -42,11 +57,15 @@ const HomePage = ()=>{
                          alignItems: 'start',
                          textAlign:"start"
                     }}>
-                        <Typography  style={{textAlign:"start"}} component="body" variant="overline"> Hello,</Typography>
-                        <Typography style={{textAlign:"start"}} component="h1" variant="h5"> User Name <Emoji symbol="👋" label="sheep"/></Typography>
+                        <Typography  style={{textAlign:"start"}} component="body" variant="overline"> Hello</Typography>
+                        <Typography style={{textAlign:"start",color:"black"}} component="h1" variant="h5" > {token.split("-")[1]}  <Emoji symbol="👋" label="sheep"/></Typography>
                     </Box>
                 </Grid>
-                <Grid item>
+                <Grid item onClick={()=>{
+                    removeCookie("attinderToken","")
+                    setauthentication(false)
+
+                }}>
                 <UserAva height={60} width={60} fill='orange' />
                 </Grid>
             </Grid>

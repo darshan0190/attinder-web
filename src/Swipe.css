@@ -38,6 +38,7 @@
   
   .swipe {
     position: absolute;
+    background:"whitesmoke";
   }
   
   .cardContainer {

@@ -9,7 +9,7 @@ import Advanced from "../components/Advanced";
 
 
 const SwipePage = ()=>{
-  return <div style={{paddingLeft:"16px"}}>
+  return <div style={{padding:"8px"}}>
  <Grid container  >
     <Grid item>
     <IconButton
@@ -41,6 +41,9 @@ const SwipePage = ()=>{
  </Grid>
  <SwipeInterFace/>
  <Advanced/>
+ <div>
+    cdcdcsdcmsdlckm
+ </div>
   </div>
 }
 

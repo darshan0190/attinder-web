@@ -1,40 +1,44 @@
 import React, { useState, useMemo, useRef } from 'react'
+import { useEffect } from 'react';
 // import TinderCard from '../react-tinder-card/index'
 import TinderCard from 'react-tinder-card'
-import "../Swipe.css"
 
-const db = [
-  {
-    name: 'Richard Hendricks',
-    url: './img/richard.jpg'
-  },
-  {
-    name: 'Erlich Bachman',
-    url: './img/erlich.jpg'
-  },
-  {
-    name: 'Monica Hall',
-    url: './img/monica.jpg'
-  },
-  {
-    name: 'Jared Dunn',
-    url: './img/jared.jpg'
-  },
-  {
-    name: 'Dinesh Chugtai',
-    url: './img/dinesh.jpg'
-  }
-]
+import "../Swipe.css"
+import API from '../utils/API';
+import Alert from '@mui/material/Alert';
+
+import {Card,Grid,} from "@material-ui/core"
+import Menu from '@mui/material/Menu';
+import IconButton from '@mui/material/IconButton';
+import MenuIcon from '@mui/icons-material/Menu';
+
+import UndoOutlinedIcon from '@mui/icons-material/UndoOutlined';
+import SwipeLeftOutlinedIcon from '@mui/icons-material/SwipeLeftOutlined';
+import SwipeRightOutlinedIcon from '@mui/icons-material/SwipeRightOutlined';
+
+// interface Student  { name: String; url:String};
 
 function Advanced () {
-  const [currentIndex, setCurrentIndex] = useState(db.length - 1)
+
+  const [studentsData,setStudentsData] = React.useState([]);
+
+  useEffect(()=>{
+    console.log("doing api call")
+    API.get("http://192.168.1.36:5001").then((response)=>{
+      console.log(response.data.data)
+      setStudentsData(response.data.data)
+    })
+  },[])
+
+  const [currentIndex, setCurrentIndex] = useState(studentsData.length==0?0:studentsData.length - 1)
   const [lastDirection, setLastDirection] = useState()
+
   // used for outOfFrame closure
   const currentIndexRef = useRef(currentIndex)
 
   const childRefs = useMemo(
     () =>
-      Array(db.length)
+      Array(studentsData.length)
         .fill(0)
         .map((i) => React.createRef()),
     []
@@ -45,7 +49,7 @@ function Advanced () {
     currentIndexRef.current = val
   }
 
-  const canGoBack = currentIndex < db.length - 1
+  const canGoBack = currentIndex < studentsData.length - 1
 
   const canSwipe = currentIndex >= 0
 
@@ -65,7 +69,7 @@ function Advanced () {
   }
 
   const swipe = async (dir) => {
-    if (canSwipe && currentIndex < db.length) {
+    if (canSwipe && currentIndex < studentsData.length) {
       await childRefs[currentIndex].current.swipe(dir) // Swipe the card!
     }
   }
@@ -78,19 +82,17 @@ function Advanced () {
     await childRefs[newIndex].current.restoreCard()
   }
 
+
   return (
-    <div>
-      <link
-        href='https://fonts.googleapis.com/css?family=Damion&display=swap'
-        rel='stylesheet'
-      />
-      <link
-        href='https://fonts.googleapis.com/css?family=Alatsi&display=swap'
-        rel='stylesheet'
-      />
-      <h1>React Tinder Card</h1>
-      <div className='cardContainer'>
-        {db.map((character, index) => (
+   <>
+    <div style={{
+      display: "flex",
+  flexDirection: "column",
+  // justifyContent: "center",
+  alignItems: "center",
+  backgroud:"whitesmoke"
+    }}>
+       {studentsData.map((character, index) => (
           <TinderCard
             ref={childRefs[index]}
             className='swipe'
@@ -104,28 +106,97 @@ function Advanced () {
             >
               <h3>{character.name}</h3>
             </div> */}
-             <img 
+            <div style={{margin:"auto",backgroud:"whitesmoke"}}>
+              <Card elevation={0} style={{height:"70vh",width:"90vw",background:"whitesmoke",borderRadius:"15px"}}>
+              <img 
+                     style={{
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover"
+                     }}
+      src="https://i.pinimg.com/originals/5e/8c/cf/5e8ccf3db56deb865236158c6f30f4f3.jpg"
+      alt="new"
+      />
+                {/* <Grid container style={{backgroud:"whitesmoke"}}>
+                  <Grid item style={{backgroud:"whitesmoke"}}>
+                    <div  style={{backgroud:"whitesmoke"}}>
+                    <img 
+                     style={{
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "contain"
+                     }}
       src="https://images.pexels.com/photos/20787/pexels-photo.jpg?auto=compress&cs=tinysrgb&h=350"
       alt="new"
       />
+                    </div>
+                  </Grid>
+                  <Grid item></Grid>
+
+                </Grid> */}
+
+              </Card>
+             {/* <img 
+      src="https://images.pexels.com/photos/20787/pexels-photo.jpg?auto=compress&cs=tinysrgb&h=350"
+      alt="new"
+      />
+      <div style={{"background":"red"}}>{character.name}</div> */}
+      </div>
           </TinderCard>
         ))}
-      </div>
-      <div className='buttons'>
-        <button style={{ backgroundColor: !canSwipe && '#c3c4d3' }} onClick={() => swipe('left')}>Swipe left!</button>
-        <button style={{ backgroundColor: !canGoBack && '#c3c4d3' }} onClick={() => goBack()}>Undo swipe!</button>
-        <button style={{ backgroundColor: !canSwipe && '#c3c4d3' }} onClick={() => swipe('right')}>Swipe right!</button>
-      </div>
-      {lastDirection ? (
-        <h2 key={lastDirection} className='infoText'>
-          You swiped {lastDirection}
-        </h2>
-      ) : (
-        <h2 className='infoText'>
-          Swipe a card or press a button to get Restore Card button visible!
-        </h2>
-      )}
-    </div>
+        
+
+        <Grid container style={{position:"fixed", bottom:0,marginBottom:"10px"}}  
+         container
+         direction="row"
+         justifyContent="space-around"
+         alignItems="center">
+    
+    <div className='buttons' style={{}}>
+      <button style={{ backgroundColor: !canSwipe && '#c3c4d3' }} onClick={() => swipe('left')}>Swipe left!</button>
+         <button style={{ backgroundColor: !canGoBack && '#c3c4d3' }} onClick={() => goBack()}>Undo swipe!</button>
+         <button style={{ backgroundColor: !canSwipe && '#c3c4d3' }} onClick={() => swipe('right')}>Swipe right!</button> */}
+       </div>
+        </Grid>
+        <div className='buttons' style={{}}>
+      <button style={{ backgroundColor: !canSwipe && '#c3c4d3' }} onClick={() => swipe('left')}>Swipe left!</button>
+         <button style={{ backgroundColor: !canGoBack && '#c3c4d3' }} onClick={() => goBack()}>Undo swipe!</button>
+         <button style={{ backgroundColor: !canSwipe && '#c3c4d3' }} onClick={() => swipe('right')}>Swipe right!</button> */}
+       </div>
+       {lastDirection ? (
+         <h2 key={lastDirection} className='infoText'>
+           You swiped {lastDirection}
+         </h2>
+       ) : (
+         <h2 className='infoText'>
+           Swipe a card or press a button to get Restore Card button visible!
+         </h2>
+       )}
+     </div>
+    
+    
+    </>
+    //   <div 
+    //   // className='cardContainer'
+    //   style={{backgroundColor:"red"}}
+    //   >
+       
+      
+    //   <div className='buttons'>
+    //     {/* <button style={{ backgroundColor: !canSwipe && '#c3c4d3' }} onClick={() => swipe('left')}>Swipe left!</button>
+    //     <button style={{ backgroundColor: !canGoBack && '#c3c4d3' }} onClick={() => goBack()}>Undo swipe!</button>
+    //     <button style={{ backgroundColor: !canSwipe && '#c3c4d3' }} onClick={() => swipe('right')}>Swipe right!</button> */}
+    //   </div>
+    //   {lastDirection ? (
+    //     <h2 key={lastDirection} className='infoText'>
+    //       You swiped {lastDirection}
+    //     </h2>
+    //   ) : (
+    //     <h2 className='infoText'>
+    //       Swipe a card or press a button to get Restore Card button visible!
+    //     </h2>
+    //   )}
+    // </div>
   )
 }
 

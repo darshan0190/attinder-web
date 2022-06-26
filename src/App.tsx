@@ -5,19 +5,27 @@ import './App.css';
 import SwipePage from './pages/SwipePage';
 import HomePage from './pages/HomePage';
 import { AccountContext } from './context/AccountContext';
+import LoginPage from './pages/LoginPage';
+import { useEffect } from 'react';
 
 function App() {
-  const { authentication, user } = React.useContext(AccountContext);
-  return (
+  const { authentication } = React.useContext(AccountContext);
+
+  useEffect(()=>{
+  },
+  [])
+  return (<>
     
-    <div className="App">
-    <BrowserRouter>
-    <Routes>
-    <Route path="/swipe" element={<SwipePage />} />
-      {/* <Route path="/" element={<HomePage />} /> */}
-    </Routes>
-  </BrowserRouter>
-  </div>
+   {authentication? <div className="App">
+   <BrowserRouter>
+   <Routes>
+   <Route path="/swipe" element={<SwipePage />} />
+   {authentication?<Route path="/home" element={<HomePage />} />:<Route path="/login" element={<LoginPage />} />}
+     <Route path="/" element={<HomePage />} />
+   </Routes>
+ </BrowserRouter>
+ </div>:<LoginPage/>}
+ </>
   );
 }
 
