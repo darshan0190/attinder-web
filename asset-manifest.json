@@ -1,0 +1,17 @@
+{
+  "files": {
+    "main.css": "/attinder-web/static/css/main.95e7356a.css",
+    "main.js": "/attinder-web/static/js/main.7b37c487.js",
+    "static/js/787.d07afa61.chunk.js": "/attinder-web/static/js/787.d07afa61.chunk.js",
+    "static/media/linux.svg": "/attinder-web/static/media/linux.e7fd0478451b8d72ff9b93b1ea475b66.svg",
+    "static/media/profile.svg": "/attinder-web/static/media/profile.6a34c7d7f86d38c076c7986f261e3a54.svg",
+    "index.html": "/attinder-web/index.html",
+    "main.95e7356a.css.map": "/attinder-web/static/css/main.95e7356a.css.map",
+    "main.7b37c487.js.map": "/attinder-web/static/js/main.7b37c487.js.map",
+    "787.d07afa61.chunk.js.map": "/attinder-web/static/js/787.d07afa61.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.95e7356a.css",
+    "static/js/main.7b37c487.js"
+  ]
+}
