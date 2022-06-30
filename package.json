@@ -1,6 +1,5 @@
 {
   "name": "attinder-web",
-  "homepage": "https://darshan0190.github.io/attinder-web",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -40,8 +39,6 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d build",
     "start": "HOST=0.0.0.0 react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
